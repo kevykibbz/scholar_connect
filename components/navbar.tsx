@@ -1,11 +1,12 @@
+'use client';
+
 import React from 'react'
 import Link from 'next/link'
 import { MenuItems } from '@/types/types'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { useSession } from 'next-auth/react'
 
-const Navbar = async () => {
-  const session = await getServerSession(authOptions)
+const Navbar = () => {
+  const { data: session } = useSession();
 
   const menuItems: MenuItems[] = [
     { name: 'Home', path: '/' },

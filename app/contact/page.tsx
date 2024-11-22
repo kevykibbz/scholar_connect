@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 
 const Contact = () => {
   return (
@@ -144,7 +144,8 @@ const Contact = () => {
 
           {/* Submit Button */}
           <button
-            type="submit"            className="w-full px-4 py-4 bg-cyan-400 text-white rounded-md hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+            type="submit"            
+            className="w-full px-4 py-4 bg-cyan-400 text-white rounded-md hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-300"
 
           >
             Send Message
@@ -164,9 +165,9 @@ const Contact = () => {
               1. How do I register for an event?
             </h4>
             <p className="text-gray-300">
-              You can register for an event by visiting the "Events" section.
-              From there, find the event you're interested in and click
-              "Register."
+              You can register for an event by visiting the &quot;Events&quot; section.
+              From there, find the event you&apos;re interested in and click
+              &quot;Register.&quot;
             </p>
           </div>
 
@@ -176,9 +177,9 @@ const Contact = () => {
               2. How do I apply for a grant?
             </h4>
             <p className="text-gray-300">
-              Navigate to the "Funding and Grants" section to search for
+              Navigate to the &quot;Funding and Grants&quot; section to search for
               available grants. Once you find one that fits your research, click
-              "Apply."
+              &quot;Apply.&quot;
             </p>
           </div>
 
@@ -188,7 +189,7 @@ const Contact = () => {
               3. Can I collaborate with other researchers?
             </h4>
             <p className="text-gray-300">
-              Yes, through the "Collaboration Tools" section. You can start a
+              Yes, through the &quot;Collaboration Tools&quot; section. You can start a
               chat, upload documents, or participate in forums to discuss and
               collaborate on projects.
             </p>
@@ -200,7 +201,7 @@ const Contact = () => {
               4. How can I submit a proposal for a project?
             </h4>
             <p className="text-gray-300">
-              Visit the "Project Proposals" section, fill out the required
+              Visit the &quot;Project Proposals&quot; section, fill out the required
               details, and submit your proposal for review.
             </p>
           </div>
@@ -211,9 +212,9 @@ const Contact = () => {
               5. How do I track my thesis submission?
             </h4>
             <p className="text-gray-300">
-              After submitting your thesis through the "Submit Thesis" page, you
-              can track its progress under the "Thesis Submissions" section.
-              You’ll be notified about the review status.
+              After submitting your thesis through the &quot;Submit Thesis&quot; page, you
+              can track its progress under the &quot;Thesis Submissions&quot; section.
+              You&apos;ll be notified about the review status.
             </p>
           </div>
         </div>

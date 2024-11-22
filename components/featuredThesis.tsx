@@ -1,6 +1,7 @@
 "use client"
 
 import { Project } from '@/types/types';
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 
 
@@ -45,12 +46,12 @@ const FeaturedThesis: React.FC = () => {
           >
             <h3 className="text-xl font-bold text-gray-400">{project.title}</h3>
             <p className="mt-2 text-gray-400">{project.description}</p>
-            <a 
+            <Link
               href={project.link} 
               className="mt-4 inline-block text-cyan-400 hover:underline"
             >
               Read More
-            </a>
+            </Link>
           </div>
         ))}
       </div>

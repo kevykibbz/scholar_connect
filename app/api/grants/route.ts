@@ -1,5 +1,5 @@
 import { query } from "@/config";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -14,7 +14,8 @@ export async function GET() {
   }
 }
 
-export async function POST(req: NextResponse) {
+// Change the parameter type from NextResponse to NextRequest
+export async function POST(req: NextRequest) {
   const { grantID, userID } = await req.json();
 
   if (!grantID || !userID) {
@@ -35,7 +36,6 @@ export async function POST(req: NextResponse) {
     FOREIGN KEY (GrantId) REFERENCES grants(GrantId),
     FOREIGN KEY (UserId) REFERENCES users(id)
     );
-
   `;
 
   await query(createTableQuery);

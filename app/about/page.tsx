@@ -122,7 +122,7 @@ const About = () => {
             Scholar Connect continues to evolve, integrating advanced features
             such as real-time collaboration and detailed user analytics to
             further enhance the academic research experience. The project is a
-            testament to the team's dedication to promoting academic
+            testament to the team&apos;s dedication to promoting academic
             collaboration and innovation.
           </p>
         </div>

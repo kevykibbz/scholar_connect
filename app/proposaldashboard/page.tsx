@@ -79,9 +79,12 @@ function ProposalDashboard() {
     if (!validationResult.success) {
       // Collect validation errors
       setIsValid(false);
-      const newErrors: any = {};
+      const newErrors: Record<keyof ProposalFormData, string> = {
+        projectTitle: '',
+        projectDescription: ''
+      };      
       validationResult.error.errors.forEach((error) => {
-        newErrors[error.path[0]] = error.message;
+        newErrors[error.path[0] as keyof ProposalFormData] = error.message;
       });
       setErrors(newErrors);
       setIsSubmitting(false);
@@ -106,6 +109,7 @@ function ProposalDashboard() {
         toast.error(`Error: ${result.error}`);
       }
     } catch (error) {
+      console.log(error)
       toast.error("Error submitting proposal");
     } finally {
       setIsSubmitting(false);
@@ -122,7 +126,7 @@ function ProposalDashboard() {
 
     if (!result.success) {
       // Collect validation errors and set to state
-      const newErrors: any = {};
+      const newErrors: { [key: string]: string } = {}; 
       result.error.errors.forEach((error) => {
         newErrors[error.path[0]] = error.message;
       });
@@ -149,6 +153,7 @@ function ProposalDashboard() {
       toast.success("Proposal updated successfully");
       await fetchProposals();
     } catch (error) {
+      console.log(error)
       toast.error("Error updating proposal");
     } finally {
       setIsSubmitting(false);
@@ -211,6 +216,7 @@ function ProposalDashboard() {
         toast.success("Feedback sent successfully");
         await fetchProposals();
       } catch (error) {
+        console.log(error)
         toast.error("Error sending feedback");
       } finally {
         setIsSubmitting(false);

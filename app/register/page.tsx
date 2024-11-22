@@ -1,12 +1,12 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { z } from "zod";
 import { formSchema } from "@/validation";
 
-
 type RegFormData = z.infer<typeof formSchema>;
+
 const Register: React.FC = () => {
   const [formData, setFormData] = useState<RegFormData>({
     name: "",
@@ -43,7 +43,7 @@ const Register: React.FC = () => {
     // Validate entire form
     try {
       formSchema.parse(formData);
-      setLoading(true); 
+      setLoading(true);
 
       // Send a POST request to the API
       const response = await fetch("/api/register", {
@@ -62,17 +62,20 @@ const Register: React.FC = () => {
       const data = await response.json();
       toast.success(data.message);
       router.push("/login");
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (err instanceof z.ZodError) {
         // Handle form validation errors (Zod)
         const newErrors: Record<string, string> = {};
-        err.errors.forEach((error: any) => {
+        err.errors.forEach((error) => {
           newErrors[error.path[0]] = error.message;
         });
         setErrors(newErrors);
-      } else {
-        // Handle API errors
+      } else if (err instanceof Error) {
+        // Handle API or other errors
         toast.error(err.message);
+      } else {
+        // Handle unexpected errors
+        toast.error("An unexpected error occurred.");
       }
     } finally {
       setLoading(false); // Stop loading once the submission is complete

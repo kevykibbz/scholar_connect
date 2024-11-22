@@ -4,6 +4,7 @@ import { signIn, useSession } from "next-auth/react";
 import { UserData } from "@/types/types";
 import { userSchema } from "@/validation";
 import { toast } from "react-hot-toast";
+import { ZodError } from "zod";
 
 const UserProfiles: React.FC = () => {
   const { data: session } = useSession();
@@ -69,12 +70,17 @@ const UserProfiles: React.FC = () => {
       userSchema.parse(userData); // Throws error if validation fails
       setErrors({}); // Clear previous errors
       return true;
-    } catch (error:any) {
-      const validationErrors = error.errors.reduce((acc: any, curr: any) => {
-        acc[curr.path[0]] = curr.message; // Map errors to field names
-        return acc;
-      }, {});
-      setErrors(validationErrors); // Set errors
+    } catch (error) {
+      if (error instanceof ZodError) {  // Check if error is an instance of ZodError
+        const validationErrors = error.errors.reduce((acc: Record<string, string>, curr) => {
+          acc[curr.path[0]] = curr.message; // Map errors to field names
+          return acc;
+        }, {});
+        setErrors(validationErrors); // Set errors
+      } else {
+        // Handle other types of errors, if necessary
+        console.error("Unexpected error", error);
+      }
       return false;
     }
   };

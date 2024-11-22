@@ -1,11 +1,9 @@
-"use client"
+"use client";
 import { NewsItem } from '@/types/types';
-import React, { useEffect, useState } from 'react';
-
-
+import React, { useEffect, useState, useCallback } from 'react';
 
 const InfiniteCarousel = () => {
-  const recentNews:NewsItem[] = [
+  const recentNews: NewsItem[] = [
     {
       title: 'New Research Collaboration Announced',
       summary: 'A groundbreaking research collaboration has been announced between institutions, focusing on the future of AI.',
@@ -30,11 +28,12 @@ const InfiniteCarousel = () => {
 
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const handleInfiniteScroll = () => {
+  // Use useCallback to memoize the handleInfiniteScroll function
+  const handleInfiniteScroll = useCallback(() => {
     const totalItems = recentNews.length;
     const nextIndex = (currentIndex + 1) % totalItems;
     setCurrentIndex(nextIndex);
-  };
+  }, [currentIndex, recentNews.length]); // Dependencies
 
   useEffect(() => {
     const intervalId = setInterval(handleInfiniteScroll, 3000);
@@ -42,7 +41,7 @@ const InfiniteCarousel = () => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [currentIndex]);
+  }, [handleInfiniteScroll]); // Run effect only when handleInfiniteScroll changes
 
   return (
     <div className="overflow-hidden w-full relative">
@@ -69,19 +68,18 @@ const InfiniteCarousel = () => {
         ))}
       </div>
 
-     {/* Navigation dots */}
-    <br/>
-    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-    {recentNews.map((_, index) => (
-        <div
-        key={index}
-        className={`w-3 h-3 rounded-full ${
-            currentIndex === index ? 'bg-cyan-400' : 'bg-gray-300'
-        }`}
-        />
-    ))}
-    </div>
-
+      {/* Navigation dots */}
+      <br />
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {recentNews.map((_, index) => (
+          <div
+            key={index}
+            className={`w-3 h-3 rounded-full ${
+              currentIndex === index ? 'bg-cyan-400' : 'bg-gray-300'
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 };

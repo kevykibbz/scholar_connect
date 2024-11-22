@@ -1,5 +1,3 @@
-import mysql from "mysql2/promise";
-import { dbConfig } from "@/config";
 import { NextResponse, NextRequest } from "next/server";
 import bcrypt from "bcryptjs"; 
 import { query } from "@/config"; 

@@ -6,8 +6,9 @@ import { LoginFormData } from "@/types/types";
 import { loginSchema } from "@/validation";
 import { signIn } from "next-auth/react"; 
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react';
 
-const Login: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
@@ -171,4 +172,10 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default function Login() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginPage />
+    </Suspense>
+  );
+}

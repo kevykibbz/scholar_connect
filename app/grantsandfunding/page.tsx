@@ -13,7 +13,6 @@ const FundingAndGrantsDashboard: React.FC = () => {
   const [grants, setGrants] = useState<Grant[]>([]);
   const [filteredGrants, setFilteredGrants] = useState<Grant[]>([]);
   const [applications, setApplications] = useState<GrantApplication[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [submittingGrants, setSubmittingGrants] = useState<{
     [key: string]: boolean;
   }>({});
@@ -206,15 +205,11 @@ const FundingAndGrantsDashboard: React.FC = () => {
                 </div>
               ))}
 
-            {error && (
-              <div className="text-center text-red-500">
-                <p>{error}</p>
-              </div>
-            )}
+            
 
-            {!loading && !error && applications.length === 0 && (
+            {!loading  && applications.length === 0 && (
               <div className="text-center text-gray-300">
-                <p>You haven't applied for any grants yet.</p>
+                <p>You haven&apos;t applied for any grants yet.</p>
               </div>
             )}
 

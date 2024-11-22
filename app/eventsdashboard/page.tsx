@@ -49,6 +49,10 @@ const EventCalendar: React.FC<{ onSelectEvent: (event: Event) => void }> = ({
     </div>
   );
 
+  const handleEventSelect = (event: Event) => {
+    onSelectEvent(event); // Calling onSelectEvent when an event is selected
+  };
+
   return (
     <div className="p-6 rounded-lg shadow-lg shadow-cyan-500/50 text-white">
       <h3 className="text-xl font-bold mb-4">Events Calendar</h3>
@@ -66,7 +70,11 @@ const EventCalendar: React.FC<{ onSelectEvent: (event: Event) => void }> = ({
         ) : eventsOnSelectedDate.length > 0 ? (
           <ul className="list-disc pl-5">
             {eventsOnSelectedDate.map((event) => (
-              <li key={event.EventID} className="mb-2">
+              <li
+                key={event.EventID}
+                className="mb-2"
+                onClick={() => handleEventSelect(event)} // Event click handler
+              >
                 {event.EventTitle}
               </li>
             ))}
@@ -178,6 +186,16 @@ const EventsAndCalendarDashboard: React.FC = () => {
 
         {viewMode === "calendar" && (
           <EventCalendar onSelectEvent={setSelectedEvent} />
+        )}
+
+        {/* Display selected event details */}
+        {selectedEvent && (
+          <div className="mt-4 p-4 bg-gray-800 rounded-lg shadow-lg text-white">
+            <h3 className="text-xl font-semibold">Selected Event</h3>
+            <p>{selectedEvent.EventTitle}</p>
+            <p>{selectedEvent.EventDate}</p>
+            {/* More event details */}
+          </div>
         )}
       </div>
     </div>

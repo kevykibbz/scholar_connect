@@ -1,4 +1,5 @@
 import { InfiniteCarousel, LatestUpdates,FeaturedThesis } from "@/components";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -9,12 +10,12 @@ export default function Home() {
           <p className="mt-4 text-lg md:text-xl text-gray-300">
             Explore and access thousands of academic theses from various fields.
           </p>
-          <a
+          <Link
             href="/"
             className="mt-6 inline-block bg-slate-700 text-gray-200 px-6 py-3 rounded-md font-semibold hover:bg-gray-500 transition"
           >
             Explore Now
-          </a>
+          </Link>
         </div>
       </section>
       <InfiniteCarousel/>

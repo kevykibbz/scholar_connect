@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (err) {
+    console.log(err)
     return NextResponse.json(
       { error: "Error saving proposal" },
       { status: 500 }
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const proposals = await query("SELECT * FROM proposals");
     return NextResponse.json(proposals);
