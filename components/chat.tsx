@@ -32,6 +32,7 @@ const Chat: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [search, setSearch] = useState<string>("");
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [loadingMessages, setLoadingMessages] = useState<boolean>(false);
   const [loadingUsers, setLoadingUsers] = useState<boolean>(false);
