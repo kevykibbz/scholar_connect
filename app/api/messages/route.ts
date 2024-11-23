@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
       FROM messages m
       WHERE (m.sender_id = ? AND m.recipient_id = ?)
         OR (m.sender_id = ? AND m.recipient_id = ?)
-      ORDER BY m.created_at DESC
+      ORDER BY m.created_at ASC
     `;
 
     // Parameters for the query: current user and selected user
