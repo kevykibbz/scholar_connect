@@ -8,25 +8,19 @@ import { useSession } from "next-auth/react";
 import { formatDistanceToNow } from "date-fns";
 import { Message, User } from "@/types/types";
 
-
-
-
-
 const SkeletonLoader = () => (
   <div className="animate-pulse space-y-4">
-    {/* Skeleton for Sender */}
     {[...Array(3)].map((_, index) => (
       <div
         key={index}
         className="h-10 bg-gray-400 rounded-lg w-1/3 ml-auto"
-      ></div> // Sender message skeleton (wider, right aligned)
+      ></div>
     ))}
-    {/* Skeleton for Receiver */}
     {[...Array(3)].map((_, index) => (
       <div
         key={index}
         className="h-10 bg-gray-400 rounded-lg w-1/3 mr-auto"
-      ></div> // Receiver message skeleton (narrower, left aligned)
+      ></div>
     ))}
   </div>
 );
@@ -38,13 +32,15 @@ const Chat: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [search, setSearch] = useState<string>("");
-  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-  const [loadingMessages, setLoadingMessages] = useState<boolean>(false); // New state for loading
+  const [loadingMessages, setLoadingMessages] = useState<boolean>(false);
   const [loadingUsers, setLoadingUsers] = useState<boolean>(false);
 
   const socketRef = useRef<Socket | null>(null);
-  const socketUrl=process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_SERVER_PROD_URL : process.env.NEXT_PUBLIC_SERVER_LOCAL_URL 
+  const socketUrl = process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_SERVER_PROD_URL : process.env.NEXT_PUBLIC_SERVER_LOCAL_URL;
+  
+  const messagesEndRef = useRef<HTMLDivElement | null>(null); // Ref for the end of messages container
+
   useEffect(() => {
     if (!socketRef.current) {
       socketRef.current = io(socketUrl as string);
@@ -58,7 +54,7 @@ const Chat: React.FC = () => {
       } catch (error) {
         console.error("Error fetching users:", error);
       } finally {
-        setLoadingUsers(false)
+        setLoadingUsers(false);
       }
     };
 
@@ -133,6 +129,13 @@ const Chat: React.FC = () => {
     fetchMessages();
   }, [selectedUser, session?.user.id]);
 
+  // Scroll to the bottom whenever messages change
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
     <div className="flex h-screen">
       <div
@@ -154,7 +157,6 @@ const Chat: React.FC = () => {
         <div className="h-full space-y-2">
           {loadingUsers ? (
             <div className="mt-[200px] flex flex-col justify-center items-center my-auto text-center">
-              {/* Loading text */}
               <p className="text-gray-400">Loading users...</p>
             </div>
           ) : (
@@ -186,7 +188,7 @@ const Chat: React.FC = () => {
               Chat with {selectedUser.name}
             </h3>
             <hr />
-            <div className="message-list h-full mt-2 mb-4  overflow-y-auto">
+            <div className="message-list h-full mt-2 mb-4 overflow-y-auto">
               {loadingMessages ? (
                 <SkeletonLoader />
               ) : (
@@ -216,6 +218,7 @@ const Chat: React.FC = () => {
                   </div>
                 ))
               )}
+              <div ref={messagesEndRef} /> {/* Empty div for scroll target */}
             </div>
             <div className="flex mt-auto">
               <textarea
