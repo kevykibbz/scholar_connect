@@ -110,3 +110,41 @@ export  interface EventRegistrationProps {
   eventId: number | string;
   eventTitle: string;
 }
+
+
+export interface Message {
+  senderId: number | null;
+  content: string;
+  createdAt: Date;
+}
+
+export interface User {
+  id: string;
+  name: string;
+}
+
+
+export interface Thread {
+  id?: string;
+  title: string;
+  createdAt: string;
+}
+
+
+export interface ThreadMessage {
+  senderId: number;
+  thread_id:number;
+  message_text: string;
+  created_at?:Date;
+  name?: string;
+
+}
+
+export type APIThreadMessage = {
+  id: number;
+  sender_id: number;
+  thread_id: number;
+  message_text: string;
+  created_at: string;
+  name:string;
+};

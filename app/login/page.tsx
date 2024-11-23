@@ -1,26 +1,28 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { LoginFormData } from "@/types/types";
 import { loginSchema } from "@/validation";
-import { signIn } from "next-auth/react"; 
-import { useSearchParams } from 'next/navigation'
-import { Suspense } from 'react';
+import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 const LoginPage: React.FC = () => {
   const [formData, setFormData] = useState<LoginFormData>({
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState<Partial<Record<keyof LoginFormData, string>>>( {});
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof LoginFormData, string>>
+  >({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(true);
   const navigate = useRouter();
 
-  const searchParams = useSearchParams()
- 
-  const redirectUrl = searchParams.get('callbackUrl') || "/home";
+  const searchParams = useSearchParams();
+
+  const redirectUrl = searchParams.get("callbackUrl") || "/home";
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +70,6 @@ const LoginPage: React.FC = () => {
       password: formData.password,
     });
 
-
     if (response?.error) {
       if (response.error === "Email not found") {
         setErrors((prevErrors) => ({
@@ -90,7 +91,6 @@ const LoginPage: React.FC = () => {
 
     setIsSubmitting(false);
     // setFormData({ email: "", password: "" });
- 
   };
 
   const hasErrors = () => {
@@ -116,11 +116,17 @@ const LoginPage: React.FC = () => {
                 id="email"
                 name="email"
                 placeholder="Enter your email"
-                className={`w-full px-4 py-4 bg-transparent text-neutral-content rounded-md focus:outline-none focus:ring-2 ${errors.email ? "border-red-500 focus:ring-red-500" : "border-green-500 focus:ring-green-500"}`}
+                className={`w-full px-4 py-4 bg-transparent text-neutral-content rounded-md focus:outline-none focus:ring-2 ${
+                  errors.email
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-green-500 focus:ring-green-500"
+                }`}
                 value={formData.email}
                 onChange={handleChange}
               />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -133,17 +139,27 @@ const LoginPage: React.FC = () => {
                 id="password"
                 name="password"
                 placeholder="Enter your password"
-                className={`w-full px-4 py-4 bg-transparent text-neutral-content rounded-md focus:outline-none focus:ring-2 ${errors.password ? "border-red-500 focus:ring-red-500" : "border-green-500 focus:ring-green-500"}`}
+                className={`w-full px-4 py-4 bg-transparent text-neutral-content rounded-md focus:outline-none focus:ring-2 ${
+                  errors.password
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-green-500 focus:ring-green-500"
+                }`}
                 value={formData.password}
                 onChange={handleChange}
               />
-              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className={`w-full px-4 py-4 bg-cyan-400 text-white rounded-md hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-300 ${hasErrors() || isSubmitting ? "opacity-60 cursor-not-allowed" : ""}`}
+              className={`w-full px-4 py-4 bg-cyan-400 text-white rounded-md hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-300 ${
+                hasErrors() || isSubmitting
+                  ? "opacity-60 cursor-not-allowed"
+                  : ""
+              }`}
               disabled={isSubmitting || !isValid}
             >
               {isSubmitting ? (
@@ -156,8 +172,18 @@ const LoginPage: React.FC = () => {
                     stroke="currentColor"
                     strokeWidth="2"
                   >
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 12a8 8 0 1116 0 8 8 0 01-16 0z"></path>
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 12a8 8 0 1116 0 8 8 0 01-16 0z"
+                    ></path>
                   </svg>
                   Loading...
                 </div>
@@ -174,7 +200,13 @@ const LoginPage: React.FC = () => {
 
 export default function Login() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="bg-background text-foreground min-h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
       <LoginPage />
     </Suspense>
   );

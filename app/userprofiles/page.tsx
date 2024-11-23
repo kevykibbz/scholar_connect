@@ -150,7 +150,7 @@ const UserProfiles: React.FC = () => {
         </h2>
 
         {/* Profile Information */}
-        <div className="flex flex-col md:flex-row  bg-gray-900 text-gray-400 p-6 rounded-lg shadow-lg text-gray-400">
+        <div className="flex flex-col md:flex-row  bg-gray-900 text-gray-400 p-6 rounded-lg shadow-lg">
           <div className="flex-1 mb-3">
             {isEditing ? (
               <>
