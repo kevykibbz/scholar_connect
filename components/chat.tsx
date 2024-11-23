@@ -44,10 +44,10 @@ const Chat: React.FC = () => {
   const [loadingUsers, setLoadingUsers] = useState<boolean>(false);
 
   const socketRef = useRef<Socket | null>(null);
-
+  const socketUrl=process.env.NODE_ENV === "production" ? process.env.NEXT_PUBLIC_SERVER_PROD_URL : process.env.NEXT_PUBLIC_SERVER_LOCAL_URL 
   useEffect(() => {
     if (!socketRef.current) {
-      socketRef.current = io(process.env.NEXT_PUBLIC_SERVER_URL as string);
+      socketRef.current = io(socketUrl as string);
     }
     setLoadingUsers(true);
     const fetchUsers = async () => {
@@ -73,7 +73,7 @@ const Chat: React.FC = () => {
         socketRef.current.disconnect();
       }
     };
-  }, []);
+  }, [socketUrl]);
 
   const sendMessage = () => {
     if (message.trim()) {

@@ -85,6 +85,7 @@ const Forum: React.FC = () => {
       setLoadingThreads(false); // End loading threads
     }
   };
+
   return (
     <div className="p-6 container bg-gray-900 rounded-lg shadow-lg mx-auto">
       <h3 className="text-2xl font-bold text-gray-100 mb-6">Project Forum</h3>

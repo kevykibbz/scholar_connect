@@ -1,7 +1,6 @@
-"use client";
-
+"use client"
 import { ThreadMessage } from "@/types/types";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -12,12 +11,17 @@ const Page: React.FC = () => {
   const { data: session } = useSession();
   const [messages, setMessages] = useState<ThreadMessage[]>([]);
   const [messageContent, setMessageContent] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true); // Loading state added
+  const [loading, setLoading] = useState<boolean>(true);
   const socketRef = useRef<Socket | null>(null);
   const { id } = useParams();
   const thread_id = id || "";
+  const socketUrl =
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_SERVER_PROD_URL
+      : process.env.NEXT_PUBLIC_SERVER_LOCAL_URL;
 
-  const fetchMessages = async () => {
+  // Use useCallback to memoize the fetchMessages function
+  const fetchMessages = useCallback(async () => {
     setLoading(true); // Start loading
     try {
       const response = await fetch(`/api/messages/${thread_id}`);
@@ -25,7 +29,6 @@ const Page: React.FC = () => {
         throw new Error("Failed to fetch messages");
       }
       const data = await response.json();
-      console.log('data:',data)
       setMessages(data);
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -33,37 +36,19 @@ const Page: React.FC = () => {
     } finally {
       setLoading(false); // Stop loading after fetch
     }
-  };
-  
-  useEffect(() => {
-    if (!socketRef.current) {
-      socketRef.current = io(process.env.NEXT_PUBLIC_SERVER_URL as string);
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchMessages = async () => {
-      setLoading(true); // Start loading
-      try {
-        const response = await fetch(`/api/messages/${thread_id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch messages");
-        }
-        const data = await response.json();
-        setMessages(data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-        toast.error("Failed to load messages");
-      } finally {
-        setLoading(false); // Stop loading after fetch
-      }
-    };
-
-    fetchMessages();
   }, [thread_id]);
 
   useEffect(() => {
-    // Check if socketRef.current is not null before using it
+    if (!socketRef.current) {
+      socketRef.current = io(socketUrl as string);
+    }
+  }, [socketUrl]);
+
+  useEffect(() => {
+    fetchMessages();
+  }, [thread_id, fetchMessages]);
+
+  useEffect(() => {
     if (socketRef.current) {
       socketRef.current.on("threadChatMessage", (newMessage: ThreadMessage) => {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -77,7 +62,7 @@ const Page: React.FC = () => {
         socketRef.current.off("threadChatMessage");
       }
     };
-  }, [thread_id,fetchMessages]);
+  }, [thread_id, fetchMessages]);
 
   const handleSendMessage = async () => {
     if (messageContent.trim() && socketRef.current) {
@@ -87,16 +72,15 @@ const Page: React.FC = () => {
         message_text: messageContent,
       };
       socketRef.current.emit("threadChatMessage", newMessage);
-      toast.success("Thread sent successfully");
-      setMessageContent("");
-      // Re-fetch messages after sending a new message
-      await fetchMessages();
+      toast.success("Message sent successfully");
+
+      setMessageContent(""); // Clear input field
+      console.log('refetching the messages....')
+      // Fetch the updated messages after sending
+      fetchMessages();
     }
   };
 
-
- 
-  // Skeleton loader component
   const SkeletonLoader = () => (
     <div className="animate-pulse space-y-2">
       <div className="h-6 bg-gray-700 rounded w-3/4"></div>
@@ -111,7 +95,7 @@ const Page: React.FC = () => {
           Chat in Thread #{thread_id}
         </h1>
 
-        <div className="bg-gray-900 text-gray-400 p-4 rounded-lg shadow-md max-h-[400px] overflow-y-auto mb-4">
+        <div className="bg-gray-900 text-gray-400 p-4 rounded-lg shadow-md max-h-[700px] overflow-y-auto mb-4">
           <ul>
             {loading
               ? // Display skeleton loader while loading
@@ -147,7 +131,6 @@ const Page: React.FC = () => {
           </ul>
         </div>
 
-        {/* Input Area */}
         <div className="flex">
           <input
             type="text"
