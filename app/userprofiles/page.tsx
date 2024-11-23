@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { getSession, signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { UserData } from "@/types/types";
 import { userSchema } from "@/validation";
 import { toast } from "react-hot-toast";
@@ -100,9 +100,6 @@ const UserProfiles: React.FC = () => {
         });
         if (response.ok) {
           await update({ ...session?.user,name: updatedUserData.name, bio: updatedUserData.bio });
-          const newSession = await getSession();  // Refetch the session
-          console.log("Refetched session:", newSession);
-
           // Handle success, e.g., show a success message
           toast.success("Profile updated successfully!");
         } else {
