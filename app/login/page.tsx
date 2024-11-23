@@ -65,7 +65,7 @@ const LoginPage: React.FC = () => {
 
     // Use NextAuth's signIn method for authentication
     const response = await signIn("credentials", {
-      redirect: false,
+      redirect: true,
       email: formData.email,
       password: formData.password,
     });
