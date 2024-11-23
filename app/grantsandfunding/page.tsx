@@ -171,12 +171,20 @@ const FundingAndGrantsDashboard: React.FC = () => {
                         <p>Deadline: {grant.Deadline}</p>
                       </div>
                       <button
-                        onClick={() => grantApplication(grant.GrantID)} // Pass the grantID to the function
-                        className="px-4 py-2 bg-cyan-400 rounded-md transition-all duration-300 hover:bg-cyan-500 text-white mt-2"
-                        disabled={submittingGrants[grant.GrantID]}
+                        onClick={() => grantApplication(grant.GrantID)}
+                        className={`px-4 py-2 bg-cyan-400 rounded-md transition-all duration-300 hover:bg-cyan-500 text-white mt-2 ${
+                          submittingGrants[grant.GrantID] || grant.applied
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        }`}
+                        disabled={
+                          submittingGrants[grant.GrantID] || grant.applied
+                        }
                       >
                         {submittingGrants[grant.GrantID]
                           ? "Submitting..."
+                          : grant.applied
+                          ? "Applied"
                           : "Apply"}
                       </button>
                     </div>
@@ -205,9 +213,7 @@ const FundingAndGrantsDashboard: React.FC = () => {
                 </div>
               ))}
 
-            
-
-            {!loading  && applications.length === 0 && (
+            {!loading && applications.length === 0 && (
               <div className="text-center text-gray-300">
                 <p>You haven&apos;t applied for any grants yet.</p>
               </div>

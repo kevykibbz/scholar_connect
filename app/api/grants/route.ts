@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const proposals = await query("SELECT * FROM grants");
+    const proposals = await query(` SELECT g.*, CASE WHEN ga.GrantId IS NOT NULL THEN true ELSE false END AS applied FROM grants g LEFT JOIN grants_applications ga ON g.grantid = ga.grantid `);  
     return NextResponse.json(proposals);
   } catch (error) {
     console.error(error);

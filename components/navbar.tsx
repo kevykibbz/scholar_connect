@@ -20,7 +20,7 @@ const Navbar = () => {
   ]
 
   return (
-    <header className="bg-gray-900 text-neutral-content shadow-md">
+    <header className="bg-gray-900 text-neutral-content shadow-md z-50">
       <div className="mx-auto px-4 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold text-slate-300">

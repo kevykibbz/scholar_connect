@@ -60,6 +60,7 @@ export interface Grant {
   GrantID: string | number;
   GrantTitle: string;
   Deadline: string;
+  applied?: boolean;
 }
 
 export type GrantApplication = {
@@ -102,4 +103,10 @@ export interface UserData {
   // projectContributions?: ProjectContribution[];
   // connections?: Connection[];
   // academicHistory?: AcademicHistory[];
+}
+
+// Define the props interface
+export  interface EventRegistrationProps {
+  eventId: number | string;
+  eventTitle: string;
 }

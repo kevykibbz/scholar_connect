@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Event, Grant } from "@/types/types";
+import { Event, EventRegistrationProps, Grant } from "@/types/types";
 import { toast } from "react-hot-toast";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-// Define EventCalendar Component directly inside the file
+
 const EventCalendar: React.FC<{ onSelectEvent: (event: Event) => void }> = ({
   onSelectEvent,
 }) => {
@@ -87,6 +87,34 @@ const EventCalendar: React.FC<{ onSelectEvent: (event: Event) => void }> = ({
   );
 };
 
+
+
+const EventRegistration: React.FC<EventRegistrationProps> = ({ eventId, eventTitle }) => {
+  const [isRegistered, setIsRegistered] = useState<boolean>(false);
+
+  const handleRegister = () => {
+    // Simulate event registration (this will eventually be an API call)
+    setIsRegistered(true);
+    console.log(`User registered for event: ${eventId} - ${eventTitle}`);
+  };
+
+  return (
+    <div className="p-6 bg-gray-800 rounded-lg shadow-lg text-white shadow-cyan-500/50">
+      <h3 className="text-xl font-bold mb-4">Register for {eventTitle}</h3>
+      {isRegistered ? (
+        <p className="text-green-400">You are registered for this event.</p>
+      ) : (
+        <button
+          onClick={handleRegister}
+          className="px-4 py-2 bg-cyan-400 hover:bg-cyan-500 text-white rounded transition-colors duration-200"
+        >
+          Register
+        </button>
+      )}
+    </div>
+  );
+};
+
 // Main Dashboard Component
 const EventsAndCalendarDashboard: React.FC = () => {
   const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
@@ -94,6 +122,7 @@ const EventsAndCalendarDashboard: React.FC = () => {
   const [events, setEvents] = useState<Grant[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  
   // Fetch events (grants) data on component mount
   useEffect(() => {
     const fetchProposals = async () => {
@@ -189,14 +218,8 @@ const EventsAndCalendarDashboard: React.FC = () => {
         )}
 
         {/* Display selected event details */}
-        {selectedEvent && (
-          <div className="mt-4 p-4 bg-gray-800 rounded-lg shadow-lg text-white">
-            <h3 className="text-xl font-semibold">Selected Event</h3>
-            <p>{selectedEvent.EventTitle}</p>
-            <p>{selectedEvent.EventDate}</p>
-            {/* More event details */}
-          </div>
-        )}
+        {selectedEvent && (<EventRegistration eventId={selectedEvent.EventID} eventTitle={selectedEvent.EventTitle} />)}
+
       </div>
     </div>
   );

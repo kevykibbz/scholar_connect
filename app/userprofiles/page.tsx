@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 import { UserData } from "@/types/types";
 import { userSchema } from "@/validation";
 import { toast } from "react-hot-toast";
 import { ZodError } from "zod";
 
 const UserProfiles: React.FC = () => {
-  const { data: session } = useSession();
+  const { data: session,update} = useSession();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
     name: "",
@@ -99,9 +99,12 @@ const UserProfiles: React.FC = () => {
           body: JSON.stringify(updatedUserData),
         });
         if (response.ok) {
+          await update({ ...session?.user,name: updatedUserData.name, bio: updatedUserData.bio });
+          const newSession = await getSession();  // Refetch the session
+          console.log("Refetched session:", newSession);
+
           // Handle success, e.g., show a success message
           toast.success("Profile updated successfully!");
-          await signIn("credentials", { redirect: false });
         } else {
           // Handle API error
           toast.error("Failed to update profile");

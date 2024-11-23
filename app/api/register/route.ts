@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255) NOT NULL,
       email VARCHAR(255) NOT NULL UNIQUE,
-      bio TEXT  DEFAULT 'An expert in AI and data-driven research.',
+      bio VARCHAR(1000) DEFAULT 'An expert in AI and data-driven research.',
       password VARCHAR(255) NOT NULL
     `;
 
